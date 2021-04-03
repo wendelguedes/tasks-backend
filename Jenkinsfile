@@ -1,9 +1,9 @@
 pipeline {
-    agente any
+    agent any
     stages {
-        stage ('Just Test'){
+        stage ('Teste') {
             steps {
-                sh 'echo deu certo'
+                sh 'echo testando Jenkinsfile'
             }
         }
     }
