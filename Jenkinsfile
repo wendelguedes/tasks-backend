@@ -34,6 +34,14 @@ pipeline {
                 deploy adapters: [tomcat8(credentialsId: 'Tomcat', path: '', url: 'http://192.168.0.2:8001/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
             }
         }
+        stage ('API Test') {
+            steps {
+                dir('api-test'){
+                    git branch: 'main', url: 'https://github.com/wendelguedes/tasks-api-test.git'
+                    sh '/var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/MAVEN_LOCAL/bin/mvn test'
+                }
+            }
+        }
     }
 }
 
