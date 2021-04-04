@@ -7,12 +7,12 @@ pipeline {
     stages {
         stage ('Build Backend') {
             steps {
-                sh "${scannerHome}/bin/mvn clean package -DskipTests=true"
+                sh "${mavemHome}/bin/mvn clean package -DskipTests=true"
             }
         }
         stage ('Unit Tests') {
             steps {
-                sh "${scannerHome}/bin/mvn test"
+                sh "${mavemHome}/bin/mvn test"
             }
         }
         stage ('Sonar Analysis') {
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 dir('api-test'){
                     git branch: 'main', url: 'https://github.com/wendelguedes/tasks-api-test.git'
-                    sh "/var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/MAVEN_LOCAL/bin/mvn test"
+                    sh "${mavemHome}/bin/mvn test"
                 }
             }
         }
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 dir('frontend'){
                     git branch: 'master', url: 'https://github.com/wendelguedes/tasks-frontend.git'
-                    sh "${scannerHome}/bin/mvn clean package -DskipTests=true"
+                    sh "${mavemHome}/bin/mvn clean package -DskipTests=true"
                     deploy adapters: [tomcat8(credentialsId: 'Tomcat', path: '', url: 'http://192.168.0.2:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
                 }
             }
@@ -56,7 +56,7 @@ pipeline {
             steps {
                 dir('functional-test'){
                     git branch: 'main', url: 'https://github.com/wendelguedes/tasks-functional-tests.git'
-                    sh "${scannerHome}/bin/mvn test"
+                    sh "${mavemHome}/bin/mvn test"
                 }
             }
         }
