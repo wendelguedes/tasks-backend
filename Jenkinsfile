@@ -52,11 +52,19 @@ pipeline {
                 }
             }
         }
-         stage ('Functional Test') {
+        stage ('Functional Test') {
             steps {
                 dir('functional-test'){
                     git branch: 'main', url: 'https://github.com/wendelguedes/tasks-functional-tests.git'
                     sh "${mavemHome}/bin/mvn test"
+                }
+            }
+        }
+        stage ('Build production') {
+            steps {
+                dir('functional-test'){
+                    sh "docker-compose build"
+                    sh "docker-compose up -d"
                 }
             }
         }
