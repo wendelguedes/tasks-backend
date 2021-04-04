@@ -1,14 +1,9 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
         stage ('Build Backend') {
             steps {
-                sh 'mvn clean package -DskipTests=true'
+                sh '/var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/MAVEN_LOCAL/bin/mvn clean package -DskipTests=true'
             }
         }
     }
